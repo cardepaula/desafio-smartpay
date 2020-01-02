@@ -1,27 +1,41 @@
 import { createReadStream, readFileSync } from 'fs';
 import * as csv from 'csv-parser';
 import * as getStream from 'get-stream';
-import { IEstabelecimentos, IProdutos } from 'src/interfaces';
+import { IEstabelecimento, IProduto } from './interfaces';
+
+import { PostgresQuerys } from './postgresql_querys';
 
 const produtosRegex = /^([A-Za-z0-9\u00C0-\u00FF\-]*)\s([A-z]*)\s([A-Za-z\u00C0-\u00FF\s]*\sS\/A)$/;
+const pgQuerys = new PostgresQuerys();
   
-async function getEstabelecimentosCSV(): Promise<IEstabelecimentos[]> {
+async function getEstabelecimentosCSV(): Promise<IEstabelecimento[]> {
   
-  let estabelecimentos: Array<IEstabelecimentos> = [];
+  let estabelecimentosCSV: Array<any> = []
+  let estabelecimentos: Array<IEstabelecimento> = [];
   const options = {
     headers: ['Estabelecimento','Cnpj','Bairro','Cidade']
   }
   const filePath = `${__dirname}/../../../estabelecimentos.csv`;
   const parseStream = csv(options);
 
-  estabelecimentos = await getStream.array(createReadStream(filePath).pipe(parseStream));
+  estabelecimentosCSV = await getStream.array(createReadStream(filePath).pipe(parseStream));
+
+  estabelecimentos = estabelecimentosCSV.map( estabelecimentoCSV => {
+    const estabelecimento:IEstabelecimento = {
+      nome: estabelecimentoCSV.Estabelecimento.trim(),
+      cnpj: parseInt(estabelecimentoCSV.Cnpj.trim(), 10),
+      bairro: estabelecimentoCSV.Bairro.trim(),
+      cidade: estabelecimentoCSV.Cidade.trim()
+    }
+    return estabelecimento;
+  })
 
   return estabelecimentos;
 }
 
 async function getProdutosTXT(): Promise<any[]> {
   
-  let produtos: IProdutos[] = [];
+  let produtos: IProduto[] = [];
   const filePath = `${__dirname}/../../../produtos.txt`;
 
   produtos = readFileSync(filePath, { encoding: 'UTF-8' })
@@ -30,10 +44,10 @@ async function getProdutosTXT(): Promise<any[]> {
     .split('\n')
     .map( data => {
       const dataArray = data.match(produtosRegex).slice(1);
-      var produto: IProdutos = {
-        Nome: dataArray[0],
-        Categoria: dataArray[1],
-        Estabelecimento: dataArray[2],
+      var produto: IProduto = {
+        nome: dataArray[0].trim(),
+        categoria: dataArray[1].trim(),
+        estabelecimento: dataArray[2].trim(),
       }
       return produto;
     });
@@ -45,8 +59,10 @@ async function bootstrap() {
   const estabelecimentos = await getEstabelecimentosCSV();
   const produtos = await getProdutosTXT();
 
-  console.log('Estabelecimentos: ', estabelecimentos[0], ' | ', estabelecimentos.length);
-  console.log('Produtos: ', produtos[0], ' | ', produtos.length);
+  await pgQuerys.dropTable();
+  await pgQuerys.createTable();
+  await pgQuerys.insertTable(estabelecimentos, produtos);
+
 }
 
 bootstrap().then(
