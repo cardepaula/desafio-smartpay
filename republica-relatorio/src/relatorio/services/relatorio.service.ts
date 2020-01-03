@@ -32,9 +32,9 @@ export class RelatorioService {
   async getEstabelecimentosDeProduto(produtoParam: string): Promise<EstabelecimentoDeProdutoDto[]> {
 
     let estabelecimentoPorProduto: EstabelecimentoDeProdutoDto[] = [];
-    const produto = await produtoEntity.findOne({where: {name: produtoParam}, relations: ['estabelecimentos']});
+    const produto = await produtoEntity.findOne({where: {nome: produtoParam}, relations: ['estabelecimentos']});
 
-    estabelecimentoPorProduto = (await produto.estabelecimentos).map( estabelecimento => {
+    estabelecimentoPorProduto = produto.estabelecimentos.map( estabelecimento => {
       return new EstabelecimentoDeProdutoDto(estabelecimento);
     })
 
