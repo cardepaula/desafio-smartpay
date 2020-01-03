@@ -1,0 +1,1 @@
+docker run --name republica-pg -e "POSTGRES_PASSWORD=pass" -p 5432:5432 -d postgres:10-alpine
