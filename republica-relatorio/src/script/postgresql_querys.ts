@@ -2,10 +2,10 @@ import { Client } from 'pg';
 import { IProduto, IEstabelecimento } from './interfaces';
 
 const pg_conn = {
-    user: 'postgres',
-    host: 'localhost',
-    database: 'postgres',
-    password: 'pass',
+    user: process.env.DB_USER || 'postgres',
+    host: process.env.DB_HOST || 'localhost',
+    database: process.env.DB_DATABASE || 'postgres',
+    password: process.env.DB_PASS || 'pass',
     port: 5432
 }
 
