@@ -11,7 +11,7 @@ import { estabelecimentoEntity, produtoEntity } from './models/entities';
     host: process.env.DB_HOST || "localhost",
     port: parseInt(process.env.DB_PORT, 10) || 5432,
     username: process.env.DB_USER || "postgres",
-    password: process.env.DB__PASS || "pass",
+    password: process.env.DB_PASS || "pass",
     database: process.env.DB_DATABASE || "postgres",
     schema: process.env.DB_SCHEMA || "public",
     synchronize: false,
