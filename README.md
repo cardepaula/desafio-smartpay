@@ -1,3 +1,51 @@
+# Solução
+Foi criada um api REST com o framework [NestJS](https://docs.nestjs.com/) de NodeJS trabanlhando juntamente com um banco Postgres. Existem dos scripts em `republica-ralatorio/src/script` que trabalham em conjunto para ler os arquivos textos, tratar os dados, criar as tabelas e popular o banco de dados.
+
+1. `postgresql_querys.ts`: script contendo as querys de CREATE, DROP e INSERT no banco.
+2. `popular_banco.ts`: script principal responsável por ler os arquivos, tratar os dados e chamar as querys.
+
+## Tecnologias:
+* NodeJS 10
+* TypeScript
+* NestJS
+* Postgres 10
+
+## Documentação da solução
+
+### Instalando as dependencias
+1. Instale o [NodeJs](https://nodejs.org/en/download/package-manager/). Essa solução foi testada no NodeJS +10, mas provavelmente funcionará em versões superiores;
+2. Instale o [NestJS](https://docs.nestjs.com/)
+3. Dentro do diretório *republica-raltorio/* execute o comando abaixo para instalar as outras dependencias:
+```
+$ npm i
+```
+### Criando e Populando o banco de dados
+1. Crie um arquivo `.env` com as variaveis para a conexão com o seu banco. Se baseie no `.env.example`.
+2. Dentro do diretorio `republica-relatorio/` execute o comando `npm run populate`. Isso executará os scripts para popularo banco.
+
+
+### Rodando a aplicação
+1. Dentro do diretorio `republica-relatorio/` execute o comando `npm run start`.
+2. Abra um navegador e acesse http://localhost:3000/relatorio/<endpoit> .Os endpoints disponíveis são:
+
+| Endpoint | Descrição |
+| ---- | -------- |
+| /produtos/<cnpj> | Lista de produtos de um determinado estabelecimento |
+| produtos-categoria/<categoria> | Lista de produtos de uma categoria com seus respectivos estabelecimentos |
+| estabelecimentos/<produto> | Lista de estabelecimentos de um determinado produto |
+
+### Banco de Modelagem
+
+### Estrutura da aplicação
+
+## Lista dos diferenciais implementados
+* Criar um [serviço](https://martinfowler.com/articles/microservices.html) com o problema
+* Utilizar banco de dados
+* Implementar o padrão de programação da tecnologia escolhida
+
+---
+
+
 # Você domina a Força?
 
 >Guerreiro Luke é pesquisador de uma empresa (República S/A) que realiza vários levantamentos de relatórios sobre produtos e estabelecimentos da região da Grande Vitória. Todos os dias ele cataloga vários itens novos e vários novos estabelecimentos, organizando tudo dentro de várias planilhas tal como seu chefe e pai (Darth Vader) ordena. Acontece que, além de todo esse trabalho ser feito manualmente, para recuperar algumas informações às vezes demora muito tempo, o que deixa o chefe de Luke furioso. Por isso, Princesa Leia, uma colega de Luke, sugeriu a construção de um dispositivo que realizasse esse procedimento de forma automática e fornecesse as informações requeridas pelo patrão em muito menos tempo. Infelizmente eles não sabem de ninguém que domine a Força para iniciar e guiá-los nessa difícil missão. Será que você pode ajudá-los?
