@@ -11,14 +11,10 @@ export class RelatorioController {
     constructor(private readonly relatorioService: RelatorioService) {}
 
     @Get('produtos/:cnpj')
-    @ApiBody({
-        type: ProdutoDeEstabelecimentoDto,
-        isArray: true
-    })
     @ApiOperation( {
         description: 'Retorna todos os produtos de um estabelecimento',
     } )
-    @ApiResponse( { status: 200, description: 'Retorna uma lista de produtos.' } )
+    @ApiResponse( { status: 200, description: 'Retorna uma lista de produtos.', type: [ProdutoDeEstabelecimentoDto] } )
     @ApiResponse( { status: 400, description: 'Objeto vazio.' } )
     @ApiParam( {
         name: 'cnpj',
@@ -35,14 +31,10 @@ export class RelatorioController {
     }
 
     @Get('produtos-categoria/:categoria')
-    @ApiBody({
-        type: ProdutoDeCategoriaDto,
-        isArray: true
-    })
     @ApiOperation( {
         description: 'Retorna todos os produtos de uma categoria, com seus respectivos estabelecimentos',
     } )
-    @ApiResponse( { status: 200, description: 'Retorna uma lista de produtos.', type: ProdutoDeCategoriaDto } )
+    @ApiResponse( { status: 200, description: 'Retorna uma lista de produtos.', type: [ProdutoDeCategoriaDto] } )
     @ApiResponse( { status: 400, description: 'Objeto vazio.' } )
     @ApiParam( {
         name: 'categoria',
@@ -59,14 +51,10 @@ export class RelatorioController {
     }
     
     @Get('estabelecimentos/:produto')
-    @ApiBody({
-        type: EstabelecimentoDeProdutoDto,
-        isArray: true
-    })
     @ApiOperation( {
         description: 'Retorna todos os estabelecimentos que possuem um  produto.',
     } )
-    @ApiResponse( { status: 200, description: 'Retorna uma lista de estabelecimentos.' } )
+    @ApiResponse( { status: 200, description: 'Retorna uma lista de estabelecimentos.', type: [EstabelecimentoDeProdutoDto] } )
     @ApiResponse( { status: 400, description: 'Objeto vazio' } )
     @ApiParam( {
         name: 'produto',
