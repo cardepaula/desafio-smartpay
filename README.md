@@ -1,8 +1,8 @@
 # Solução
-Foi criada um api REST com o framework [NestJS](https://docs.nestjs.com/) de NodeJS trabanlhando juntamente com um banco Postgres. Existem dos scripts em `republica-ralatorio/src/script` que trabalham em conjunto para ler os arquivos textos, tratar os dados, criar as tabelas e popular o banco de dados.
+Foi criada um api REST com o framework [NestJS](https://docs.nestjs.com/) de NodeJS trabanlhando juntamente com um banco Postgres. Existem dos scripts em `republica-ralatorio/src/script` que trabalham em conjunto para ler os arquivos textos, tratar os dados, criar as tabelas e popular o banco de dados. Também foi desenvolvido um Dockerfile da aplicação.
 
-1. `postgresql_querys.ts`: script contendo as querys de CREATE, DROP e INSERT no banco.
-2. `popular_banco.ts`: script principal responsável por ler os arquivos, tratar os dados e chamar as querys.
+1. `postgresqlQuerys.ts`: script contendo as querys de CREATE, DROP e INSERT no banco.
+2. `popularBanco.ts`: script principal responsável por ler os arquivos, tratar os dados e chamar as querys.
 
 ## Tecnologias:
 * NodeJS 10
@@ -11,6 +11,38 @@ Foi criada um api REST com o framework [NestJS](https://docs.nestjs.com/) de Nod
 * Postgres 10
 
 ## Documentação da solução
+
+### Estrutura da aplicação
+
+O projeto foi estruturado da seguinte forma
+
+* src
+  * relatorio # Módulo relatorio 
+    * controllers
+      * relatorio.controller.ts # Controlador do módulo relatorio
+    * models # Modelos utilizados pela aplicação
+      * dto # Modelos de retorno da api (Objeto de Transferência de Dados) 
+        * estabelecimentoDeProduto.ts # DTO que contém as informações do estabelecimento
+        * produtoDeCategoria.ts # DTO que contém as informação de um produto e seus estabelecimentos
+        * produtoDeEstabelecimento.ts # DTO que contém as informações de um produto
+      * entities # Modelos que mapeiam as entidades do banco de dados (utilizando TypeORM) 
+        * estabelecimento.entity.ts
+        * produto.entity.ts
+    * services # Serviço do módulo relatório
+    * relatorio.module.ts # Definição do módulo de relatorio e suas dependências
+  * script
+    * interfaces # Interfaces, relacionadas aos arquivos textos, utilizadas nos scripts
+      * estabelecimentoText.interface.ts
+      * produtoText.interface.ts
+    * textFiles # Arquivos textos que contém os registros
+      * estabelecimentos.csv
+      * produtos.txt
+    * popularBanco.ts # Script para ler, tratar e salvar os registros no banco
+    * postgresqlQuerys.ts # Script com as querys
+  * app.controller.ts # Controlador principal (root)
+  * app.module.ts # Módulo principal (root)
+  * app.service.ts # Serviço principal da aplicação
+  * main.ts # Arquivo para o bootstrap da api
 
 ### Instalando as dependencias
 1. Instale o [NodeJs](https://nodejs.org/en/download/package-manager/). Essa solução foi testada no NodeJS +10, mas provavelmente funcionará em versões superiores;
@@ -23,25 +55,53 @@ $ npm i
 1. Crie um arquivo `.env` com as variaveis para a conexão com o seu banco. Se baseie no `.env.example`.
 2. Dentro do diretorio `republica-relatorio/` execute o comando `npm run populate`. Isso executará os scripts para popularo banco.
 
+### Banco de Modelagem
+Utilizei o banco relacional Postgres por já ter trabalhado com ele. Densevolvi usando um docker do Postgres 10:
+
+```
+$ docker run --name republica-pg -e "POSTGRES_PASSWORD=pass" -p 5432:5432 -d postgres:10-alpine
+```
+
+A modelagem ficou da seguinte forma:
+
+![Modelo Lógico](/modelos_bd/modelo_logico.png)
+
+**Entidades:**
+* Estabelecimento: contém os atributos do estabelecimento
+* Produto: contém os atributos do produto
+* estabelecimento_produto: contém o relacionamento entre Estabelecimento e Produto
+
+
 
 ### Rodando a aplicação
-1. Dentro do diretorio `republica-relatorio/` execute o comando `npm run start`.
-2. Abra um navegador e acesse http://localhost:3000/relatorio/<endpoit> .Os endpoints disponíveis são:
+
+**Localmente**
+Dentro do diretorio `republica-relatorio/` execute o comando `npm run start`.
+
+**Docker**
+Dentro do diretorio `republica-relatorio/` execute os seguintes comandos:
+
+```
+$ docker build -t republicarelatorios:latest .  # Cria uma imagem da aplicação
+$ docker run -d -e DB_HOST='localhost' -e DB_PORT=5432 -e DB_USER='postgres' -e DB__PASS='pass' -e DB_DATABASE='postgres' -e DB_SCHEMA='public' -p 3000:3000 republicarelatorios:latest # Executa a web api e expõem na porta 3000
+$ docker run --rm -it -e DB_HOST='localhost' -e DB_PORT=5432 -e DB_USER='postgres' -e DB__PASS='pass' -e DB_DATABASE='postgres' -eDB_SCHEMA='public' republicarelatorios:latest npm run populate # Executa o job de preencher o banco com as informações dos arquivos textos
+```
+
+OBS: Lembrar de substituir as variaveis de ambiente de acordo com o seu banco.
+
+Abra um navegador e acesse http://localhost:3000/docs para abrir o [swagger](https://docs.nestjs.com/recipes/swagger#openapi-swagger) .Os endpoints disponíveis são:
 
 | Endpoint | Descrição |
 | ---- | -------- |
-| /produtos/<cnpj> | Lista de produtos de um determinado estabelecimento |
-| produtos-categoria/<categoria> | Lista de produtos de uma categoria com seus respectivos estabelecimentos |
-| estabelecimentos/<produto> | Lista de estabelecimentos de um determinado produto |
-
-### Banco de Modelagem
-
-### Estrutura da aplicação
+| /relatorio/produtos/<cnpj> | Lista de produtos de um determinado estabelecimento |
+| /relatorio/produtos-categoria/<categoria> | Lista de produtos de uma categoria com seus respectivos estabelecimentos |
+| /relatorio/estabelecimentos/<produto> | Lista de estabelecimentos de um determinado produto |
 
 ## Lista dos diferenciais implementados
 * Criar um [serviço](https://martinfowler.com/articles/microservices.html) com o problema
 * Utilizar banco de dados
 * Implementar o padrão de programação da tecnologia escolhida
+* Implementar usando Docker
 
 ---
 
