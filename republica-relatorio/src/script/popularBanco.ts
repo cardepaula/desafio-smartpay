@@ -3,7 +3,7 @@ import * as csv from 'csv-parser';
 import * as getStream from 'get-stream';
 import { IEstabelecimento, IProduto } from './interfaces';
 
-import { PostgresQuerys } from './postgresql_querys';
+import { PostgresQuerys } from './postgresqlQuerys';
 
 const produtosRegex = /^([A-Za-z0-9\u00C0-\u00FF\-]*)\s([A-z]*)\s([A-Za-z\u00C0-\u00FF\s]*\sS\/A)$/;
 const pgQuerys = new PostgresQuerys();
