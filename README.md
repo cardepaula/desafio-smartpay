@@ -45,7 +45,7 @@ O projeto foi estruturado da seguinte forma
   * app.service.ts # Serviço principal da aplicação
   * main.ts # Arquivo para o bootstrap da api
 
-### Banco de Modelagem
+### Modelagem do banco
 Utilizei o banco relacional Postgres por já ter trabalhado com ele. Densevolvi usando um docker do Postgres 10:
 
 ```
