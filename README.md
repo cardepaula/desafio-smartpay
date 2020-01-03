@@ -9,6 +9,7 @@ Foi criada um api REST com o framework [NestJS](https://docs.nestjs.com/) de Nod
 * TypeScript
 * NestJS
 * Postgres 10
+* Swagger
 
 ## Documentação da solução
 
@@ -86,7 +87,7 @@ $ docker run --rm -it -e DB_HOST='localhost' -e DB_PORT=5432 -e DB_USER='postgre
 
 OBS: Lembrar de substituir as variaveis de ambiente de acordo com o seu banco.
 
-Abra um navegador e acesse http://localhost:3000/docs para abrir o [swagger](https://docs.nestjs.com/recipes/swagger#openapi-swagger) .Os endpoints disponíveis são:
+Abra um navegador e acesse http://localhost:3000/docs para abrir o [swagger](https://docs.nestjs.com/recipes/swagger#openapi-swagger). Os endpoints disponíveis são:
 
 | Endpoint | Descrição |
 | ---- | -------- |
