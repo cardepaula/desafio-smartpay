@@ -35,23 +35,23 @@ export class PostgresQuerys {
         console.log("Tabela produto criada")
 
         await client.query(`CREATE TABLE estabelecimento_produto(
-            fk_id_estabelecimento INTEGER NOT NULL,
-            fk_id_produto INTEGER NOT NULL
+            id_estabelecimento INTEGER NOT NULL,
+            id_produto INTEGER NOT NULL
         );`)
 
         console.log("Tabela estabelecimento_produto criada")
 
         await client.query(`ALTER TABLE estabelecimento_produto ADD CONSTRAINT FK_estabelecimento_produto_1
-        FOREIGN KEY (fk_id_estabelecimento)
+        FOREIGN KEY (id_estabelecimento)
         REFERENCES estabelecimento (id_estabelecimento);`)
 
-        console.log("Tabela chave estrangeira estabelecimento criada")
+        console.log("Constraint referente a estabelecimento adicionada")
 
         await client.query(`ALTER TABLE estabelecimento_produto ADD CONSTRAINT FK_estabelecimento_produto_2
-        FOREIGN KEY (fk_id_produto)
+        FOREIGN KEY (id_produto)
         REFERENCES produto (id_produto);`)
 
-        console.log("Tabela chave estrangeira produto criada")
+        console.log("Constraint referente a produto adicionada")
     
         await client.end();
         
@@ -75,7 +75,7 @@ export class PostgresQuerys {
 
         const queryEstabelecimento = "INSERT INTO estabelecimento (nome, cnpj, bairro, cidade) VALUES($1, $2, $3, $4);";
         const queryProduto = "INSERT INTO produto (nome, categoria) VALUES($1, $2);";
-        const queryEstaProd = "INSERT INTO estabelecimento_produto (fk_id_estabelecimento, fk_id_produto) VALUES($1, $2);";
+        const queryEstaProd = "INSERT INTO estabelecimento_produto (id_estabelecimento, id_produto) VALUES($1, $2);";
 
         const selectEstabelecimento = "SELECT id_estabelecimento FROM estabelecimento WHERE nome ILIKE $1 and cnpj = $2 and bairro ILIKE $3 and cidade ILIKE $4;";
         const selectEstabelecimentoNome = "SELECT id_estabelecimento FROM estabelecimento WHERE nome ILIKE $1;";
