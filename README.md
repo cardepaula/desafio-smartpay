@@ -44,17 +44,6 @@ O projeto foi estruturado da seguinte forma
   * app.service.ts # Serviço principal da aplicação
   * main.ts # Arquivo para o bootstrap da api
 
-### Instalando as dependencias
-1. Instale o [NodeJs](https://nodejs.org/en/download/package-manager/). Essa solução foi testada no NodeJS +10, mas provavelmente funcionará em versões superiores;
-2. Instale o [NestJS](https://docs.nestjs.com/)
-3. Dentro do diretório *republica-raltorio/* execute o comando abaixo para instalar as outras dependencias:
-```
-$ npm i
-```
-### Criando e Populando o banco de dados
-1. Crie um arquivo `.env` com as variaveis para a conexão com o seu banco. Se baseie no `.env.example`.
-2. Dentro do diretorio `republica-relatorio/` execute o comando `npm run populate`. Isso executará os scripts para popularo banco.
-
 ### Banco de Modelagem
 Utilizei o banco relacional Postgres por já ter trabalhado com ele. Densevolvi usando um docker do Postgres 10:
 
@@ -71,7 +60,15 @@ A modelagem ficou da seguinte forma:
 * Produto: contém os atributos do produto
 * estabelecimento_produto: contém o relacionamento entre Estabelecimento e Produto
 
-
+### Instalando as dependencias
+1. Instale o [NodeJs](https://nodejs.org/en/download/package-manager/). Essa solução foi testada no NodeJS +10, mas provavelmente funcionará em versões superiores;
+2. Dentro do diretório *republica-raltorio/* execute o comando abaixo para instalar as outras dependencias:
+```
+$ npm i
+```
+### Criando e Populando o banco de dados
+1. Crie um arquivo `.env` com as variaveis para a conexão com o seu banco. Se baseie no `.env.example`.
+2. Dentro do diretorio `republica-relatorio/` execute o comando `npm run populate`. Isso executará os scripts para popularo banco.
 
 ### Rodando a aplicação
 
@@ -84,7 +81,7 @@ Dentro do diretorio `republica-relatorio/` execute os seguintes comandos:
 ```
 $ docker build -t republicarelatorios:latest .  # Cria uma imagem da aplicação
 $ docker run -d -e DB_HOST='localhost' -e DB_PORT=5432 -e DB_USER='postgres' -e DB__PASS='pass' -e DB_DATABASE='postgres' -e DB_SCHEMA='public' -p 3000:3000 republicarelatorios:latest # Executa a web api e expõem na porta 3000
-$ docker run --rm -it -e DB_HOST='localhost' -e DB_PORT=5432 -e DB_USER='postgres' -e DB__PASS='pass' -e DB_DATABASE='postgres' -eDB_SCHEMA='public' republicarelatorios:latest npm run populate # Executa o job de preencher o banco com as informações dos arquivos textos
+$ docker run --rm -it -e DB_HOST='localhost' -e DB_PORT=5432 -e DB_USER='postgres' -e DB__PASS='pass' -e DB_DATABASE='postgres' -eDB_SCHEMA='public' republicarelatorios:latest npm run populate # Executa o job de popular o banco com as informações dos arquivos textos
 ```
 
 OBS: Lembrar de substituir as variaveis de ambiente de acordo com o seu banco.
