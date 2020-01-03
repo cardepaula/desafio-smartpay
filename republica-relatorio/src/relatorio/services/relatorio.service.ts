@@ -4,10 +4,7 @@ import { EstabelecimentoDeProdutoDto, ProdutoDeCategoriaDto, ProdutoDeEstabeleci
 
 @Injectable()
 export class RelatorioService {
-  async getRelatorio() {
-    return 'Relatorio';
-  }
-
+  
   async getProdutosDeEstabelecimento(cnpjParam: number): Promise<ProdutoDeEstabelecimentoDto[]> {
       
     let produtosDto: ProdutoDeEstabelecimentoDto[] = [];

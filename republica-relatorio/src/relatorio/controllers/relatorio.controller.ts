@@ -4,12 +4,8 @@ import { RelatorioService } from '../services/relatorio.service';
 
 @Controller('relatorio')
 export class RelatorioController {
+    
     constructor(private readonly relatorioService: RelatorioService) {}
-
-    @Get()
-    async getRelatorio(): Promise<string> {
-        return this.relatorioService.getRelatorio();
-    }
 
     @Get('produtos/:cnpj')
     async getProdutosDeEstabelecimento(@Res() res: Response, @Param() params: {cnpj: string}) {
