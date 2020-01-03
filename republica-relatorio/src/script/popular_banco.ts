@@ -22,10 +22,10 @@ async function getEstabelecimentosCSV(): Promise<IEstabelecimento[]> {
 
   estabelecimentos = estabelecimentosCSV.map( estabelecimentoCSV => {
     const estabelecimento:IEstabelecimento = {
-      nome: estabelecimentoCSV.Estabelecimento.trim(),
+      nome: estabelecimentoCSV.Estabelecimento.trim().toLowerCase(),
       cnpj: parseInt(estabelecimentoCSV.Cnpj.trim(), 10),
-      bairro: estabelecimentoCSV.Bairro.trim(),
-      cidade: estabelecimentoCSV.Cidade.trim()
+      bairro: estabelecimentoCSV.Bairro.trim().toLowerCase(),
+      cidade: estabelecimentoCSV.Cidade.trim().toLowerCase()
     }
     return estabelecimento;
   })
@@ -45,9 +45,9 @@ async function getProdutosTXT(): Promise<any[]> {
     .map( data => {
       const dataArray = data.match(produtosRegex).slice(1);
       var produto: IProduto = {
-        nome: dataArray[0].trim(),
-        categoria: dataArray[1].trim(),
-        estabelecimento: dataArray[2].trim(),
+        nome: dataArray[0].trim().toLowerCase(),
+        categoria: dataArray[1].trim().toLowerCase(),
+        estabelecimento: dataArray[2].trim().toLowerCase(),
       }
       return produto;
     });
